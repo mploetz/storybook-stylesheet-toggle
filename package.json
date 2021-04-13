@@ -1,17 +1,18 @@
 {
-  "name": "storybook-addon-kit",
-  "version": "0.0.0",
-  "description": "everything you need to build a Storybook addon",
+  "name": "storybook-stylesheet-toggle",
+  "version": "0.1.0",
+  "description": "A Storybook addon for toggling between stylesheets.",
   "keywords": [
     "storybook-addons",
-    "style",
-    "test"
+    "stylesheets",
+    "styles",
+    "css"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/storybookjs/storybook-addon-kit"
+    "url": "https://github.com/cheddam/storybook-stylesheet-toggle"
   },
-  "author": "winkerVSbecks",
+  "author": "Garion Herman <garion.herman@akqa.com>",
   "license": "MIT",
   "main": "dist/preset",
   "files": [
@@ -23,7 +24,7 @@
     "clean": "rimraf ./dist",
     "build": "babel ./src --out-dir ./dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 6006 -s ./",
     "start": "concurrently \"npm run storybook -- --no-manager-cache --quiet\" \"npm run build -- --watch\"",
     "build-storybook": "build-storybook",
     "prerelease": "node check-metadata.js",
@@ -64,7 +65,7 @@
     "access": "public"
   },
   "storybook": {
-    "displayName": "Addon Kit",
+    "displayName": "Stylesheet Toggle",
     "supportedFrameworks": [
       "react",
       "vue",

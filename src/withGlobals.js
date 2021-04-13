@@ -1,39 +1,32 @@
 /* eslint-env browser */
-import { useEffect, useGlobals } from "@storybook/addons";
+import { useEffect, useGlobals, useParameter } from "@storybook/addons";
+import { PARAM_KEY } from "./constants";
 
-export const withGlobals = (StoryFn, context) => {
-  const [{ myAddon }, updateGlobals] = useGlobals();
-  // Is the addon being used in the docs panel
-  const isInDocs = context.viewMode === "docs";
+export const withGlobals = (StoryFn) => {
+  const [{ selectedStylesheetID }, updateGlobals] = useGlobals();
+
+  const { stylesheets = [] } = useParameter(PARAM_KEY, {});
+  const selectedStylesheet = stylesheets.find((s) => s.id === selectedStylesheetID);
 
   useEffect(() => {
-    // Execute your side effect here
-    // For example, to manipulate the contents of the preview
-    const selectorId = isInDocs ? `#anchor--${context.id} .docs-story` : `root`;
-
-    displayToolState(selectorId, { myAddon, isInDocs });
-  }, [myAddon]);
+    if (selectedStylesheet) {
+      updateStylesheet(selectedStylesheet.url);
+    }
+  }, [selectedStylesheetID]);
 
   return StoryFn();
 };
 
-function displayToolState(selector, state) {
-  const rootElement = document.getElementById(selector);
-  let preElement = rootElement.querySelector("pre");
+function updateStylesheet(url) {
+  const headEl = document.querySelector('head');
+  let stylesheetEl = document.querySelector('link[data-toggle]');
 
-  if (!preElement) {
-    preElement = document.createElement("pre");
-    preElement.style.setProperty("margin-top", "2rem");
-    preElement.style.setProperty("padding", "1rem");
-    preElement.style.setProperty("background-color", "#eee");
-    preElement.style.setProperty("border-radius", "3px");
-    preElement.style.setProperty("max-width", "600px");
-    rootElement.appendChild(preElement);
+  if (!stylesheetEl) {
+    stylesheetEl = document.createElement("link");
+    stylesheetEl.rel = 'stylesheet';
+    stylesheetEl.dataset.toggle = true;
+    headEl.appendChild(stylesheetEl);
   }
 
-  preElement.innerText = `This snippet is injected by the withGlobals decorator.
-It updates as the user interacts with the ⚡ tool in the toolbar above.
-
-${JSON.stringify(state, null, 2)}
-`;
+  stylesheetEl.href = url;
 }

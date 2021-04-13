@@ -1,31 +1,65 @@
 import React, { useCallback } from "react";
-import { useGlobals } from "@storybook/api";
-import { Icons, IconButton } from "@storybook/components";
-import { TOOL_ID } from "./constants";
+import { useGlobals, useParameter } from "@storybook/api";
+import { Icons, IconButton, WithTooltip, TooltipLinkList } from "@storybook/components";
+import { TOOL_ID, PARAM_KEY } from "./constants";
+
+/**
+ * Structures the list of stylesheets for rendering in the tooltip.
+ *
+ * @param {*} list
+ * @param {*} set
+ * @param {*} state
+ * @param {*} close
+ * @returns
+ */
+const generateLinkList = (list, set, current, close) => {
+  return list
+    .map((i) => {
+      return {
+        ...i,
+        onClick: () => {
+          set(i.id);
+          close();
+        },
+        active: i.id === current,
+      };
+    });
+}
 
 export const Tool = () => {
-  const [{ myAddon }, updateGlobals] = useGlobals();
+  const [{ selectedStylesheetID }, updateGlobals] = useGlobals();
 
-  const toggleMyTool = useCallback(
-    () =>
+  const { stylesheets = [] } = useParameter(PARAM_KEY, {});
+
+  const updateSelectedStylesheet = useCallback(
+    (id) =>
       updateGlobals({
-        myAddon: !myAddon,
+        selectedStylesheetID: id,
       }),
-    [myAddon]
+    [selectedStylesheetID]
   );
 
+  if (stylesheets.length && !selectedStylesheetID) {
+    updateSelectedStylesheet(stylesheets[0].id);
+  }
+
   return (
-    <IconButton
-      key={TOOL_ID}
-      active={myAddon}
-      title="Enable my addon"
-      onClick={toggleMyTool}
-    >
-      {/*
-        Checkout https://next--storybookjs.netlify.app/official-storybook/?path=/story/basics-icon--labels
-        for the full list of icons
-      */}
-      <Icons icon="lightning" />
-    </IconButton>
+    stylesheets.length ?
+    <WithTooltip
+      placement="top"
+      trigger="click"
+      tooltip={({ onHide }) => (
+        <TooltipLinkList links={generateLinkList(stylesheets, updateSelectedStylesheet, selectedStylesheetID, onHide)} />
+      )}
+      closeOnClick
+      >
+      <IconButton
+        key={TOOL_ID}
+        title="Toggle stylesheet"
+      >
+        <Icons icon="paintbrush" />
+      </IconButton>
+    </WithTooltip>
+    : ''
   );
 };
