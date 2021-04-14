@@ -1,6 +1,6 @@
 {
   "name": "storybook-stylesheet-toggle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Storybook addon for toggling between stylesheets.",
   "keywords": [
     "storybook-addons",
