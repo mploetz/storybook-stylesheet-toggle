@@ -1,7 +1,7 @@
 import { addParameters } from '@storybook/react';
 
 addParameters({
-    stylesheetToggle: {
+    themes: {
       stylesheets: [
           {
               id: 'red',

@@ -1,42 +1,33 @@
-# Storybook Stylesheet Toggle
+## CSS Stylesheet selector
+------
+Easily add additional stylesheets to switch between your stories.
 
-A simple addon for Storybook that allows you to define a set of stylesheets that can be toggled between. This may be useful if your project has multiple themes, or if you want to stress test your components in different styling environments.
-
-### Getting started
-
-`yarn add -D storybook-stylesheet-toggle`
-
-Install the addon in `.storybook/main.js`:
-
+### Install
+----
 ```
-module.exports = {
-  addons: ["storybook-stylesheet-toggle"],
-};
+npm i css-stylesheet-switcher
 ```
 
-Add the following configuration to `.storybook/preview.js`:
+### Usage
+---
 
 ```
 import { addParameters } from '@storybook/react';
 
 addParameters({
-  stylesheetToggle: {
-    stylesheets: [
-      {
-        id: 'first',
-        title: 'First stylesheet',
-        url: 'path/to/first-sheet.css',
-      },
-      {
-        id: 'second',
-        title: 'Second stylesheet',
-        url: 'path/to/second-sheet.css',
-      },
-    ],
-  },
+    themeStylesheetSelector: {
+        stylesheets: [
+            {
+                id: 'Theme 1',
+                title: 'Theme 1',
+                url: 'css/someCss1.css'
+            },
+            {
+                id: 'Theme 2',
+                title: 'Theme 2',
+                url: 'css/someCss2.css'
+            }
+        ]
+    }
 });
 ```
-
-Ensure the path to your stylesheets is being served by Storybook (with the `-s ./path` parameter.)
-
-Boot Storybook, and you should now see a paintbrush menu, allowing you to toggle between the stylesheets you've configured. The first stylesheet will be applied by default.
