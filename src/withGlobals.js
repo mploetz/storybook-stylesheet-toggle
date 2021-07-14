@@ -10,20 +10,21 @@ export const withGlobals = (StoryFn) => {
 
   useEffect(() => {
     if (selectedStylesheet) {
-      updateStylesheet(selectedStylesheet.url);
+      updateStylesheet(selectedStylesheet.url, selectedStylesheetID);
     }
   }, [selectedStylesheetID]);
 
   return StoryFn();
 };
 
-function updateStylesheet(url) {
+function updateStylesheet(url, selectedStylesheetID) {
   const headEl = document.querySelector('head');
   let stylesheetEl = document.querySelector('link[data-toggle]');
 
   if (!stylesheetEl) {
     stylesheetEl = document.createElement("link");
     stylesheetEl.rel = 'stylesheet';
+    stylesheetEl.id = selectedStylesheetID;
     stylesheetEl.dataset.toggle = true;
     headEl.appendChild(stylesheetEl);
   }
