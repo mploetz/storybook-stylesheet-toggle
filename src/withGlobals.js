@@ -24,10 +24,10 @@ function updateStylesheet(url, selectedStylesheetID) {
   if (!stylesheetEl) {
     stylesheetEl = document.createElement("link");
     stylesheetEl.rel = 'stylesheet';
-    stylesheetEl.id = selectedStylesheetID;
     stylesheetEl.dataset.toggle = true;
     headEl.appendChild(stylesheetEl);
   }
-
+  
+  if (stylesheetEl.id !== selectedStylesheetID) stylesheetEl.id = selectedStylesheetID;
   stylesheetEl.href = url;
 }
